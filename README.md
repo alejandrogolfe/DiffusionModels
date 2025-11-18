@@ -89,7 +89,7 @@ The `train_params` section in the configuration file defines the key parameters 
 
 
 ## Acknowledgment
-This repository is mainly based on [StableDiffusion-PyTorch]([https://github.com/sthalles/SimCLR](https://github.com/explainingai-code/StableDiffusion-PyTorch)) code base and [SiT](https://github.com/willisma/SiT) . We sincerely thank prior authors on this topic for their code base.
+This repository is mainly based on [StableDiffusion-PyTorch](https://github.com/explainingai-code/StableDiffusion-PyTorch) code base and [SiT](https://github.com/willisma/SiT) . We sincerely thank prior authors on this topic for their code base.
 
 ## Citation
 
