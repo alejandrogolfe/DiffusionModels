@@ -57,13 +57,12 @@ def sample(accelerator: Accelerator,
     num_samples = train_config['num_samples']
     num_classes = train_config['num_classes']
     sample_classes = torch.randint(0, num_classes, (num_samples,))
-    sample_classes = accelerator.prepare(sample_classes)  # Preparar la clase de entrada
+    sample_classes = sample_classes.to(accelerator.device)  # Preparar la clase de entrada
     class_labels = diffusion_model_config["params"]["condition_types"]["class_condition_config"]["class_labels"]
-    print('Generando imágenes para {}'.format(list(sample_classes.numpy())))
-    cond_input =torch.nn.functional.one_hot(sample_classes, num_classes).to(device)
+    print('Generando imágenes para {}'.format(list(sample_classes)))
 
     # Entrada incondicional para la guía libre de clasificador
-    uncond_input = cond_input * 0
+    uncond_input = sample_classes * 0
     uncond_input = accelerator.prepare(uncond_input)
 
 
@@ -77,7 +76,7 @@ def sample(accelerator: Accelerator,
     for i in tqdm(reversed(range(diffusion_config['num_timesteps']))):
         # Obtener la predicción del ruido
         t_i = t[:, i]
-        noise_pred_cond = model(xt, t_i, cond_input)
+        noise_pred_cond = model(xt, t_i, sample_classes)
         if cf_guidance_scale > 1:
             noise_pred_uncond = model(xt, t_i, uncond_input)
             noise_pred = noise_pred_uncond + cf_guidance_scale * (noise_pred_cond - noise_pred_uncond)
